@@ -33,6 +33,50 @@ docker compose up -d
 
 ---
 
+## Features in Action
+
+### Live Traffic Dashboard
+![Dashboard](docs/demos/01-dashboard.mp4)
+Real-time request feed, top-IP leaderboard, world traffic map, and live blocking activity — all in one view.
+
+---
+
+### Owl AI Assistant
+![Owl Chat](docs/demos/02-owl-chat.mp4)
+Ask your gateway anything in plain English. Owl analyses current traffic, surfaces threats, and recommends exactly what to tighten — no dashboards to dig through.
+
+---
+
+### IP Intelligence
+![IP Intelligence](docs/demos/03-ip-intelligence.mp4)
+Every IP automatically profiled: geolocation, ASN, VPN/Tor detection, AbuseIPDB reputation score, and full request history. Click any IP to deep-dive, then ask Owl to triage it in context.
+
+---
+
+### Gateway Control Plane
+![Gateway](docs/demos/04-gateway.mp4)
+Full Envoy xDS control — live topology view, listeners, filter chains, clusters, and extensions. See exactly which clusters are in use and by how many chains. No YAML editing required.
+
+---
+
+### TLS Certificate Automation
+![Certs](docs/demos/05-certs.mp4)
+ACME auto-renewal via Let's Encrypt or ZeroSSL, delivered straight to Envoy SDS. Stuck on HTTP-01 prerequisites? Ask Owl to walk you through it step by step.
+
+---
+
+### AI Patrol Sweeps
+![AI Patrol](docs/demos/06-patrol.mp4)
+Scheduled AI sweeps monitor your traffic around the clock. Threats get triaged automatically and pushed to your notification channels — Telegram, Discord, Slack, or webhook.
+
+---
+
+### Mobile: Owl on the Go
+![Mobile Owl](docs/demos/07-mobile.mp4)
+Open the dashboard on your phone, ask Owl what happened in the last two hours, and watch it triage the threats, block the bad IPs, and confirm the blocks — all from a single chat.
+
+---
+
 ## Features
 
 | | Feature | Description |
@@ -46,6 +90,7 @@ docker compose up -d
 | 🌍 | **Geo Analytics** | Country-level traffic breakdown, remote or local MaxMind GeoIP |
 | 🔑 | **Auth & SSO** | Built-in login + optional OIDC/SSO (Google, Authentik, Keycloak, etc.) |
 | 🔍 | **IP Intelligence** | Per-IP profiles with ASN, ISP, VPN/Tor detection, AbuseIPDB reputation |
+| 📱 | **Mobile-ready** | Full dashboard + Owl chat from any device — no native app required |
 
 ---
 
