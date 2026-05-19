@@ -45,7 +45,7 @@ curl -o configs/starter.json https://raw.githubusercontent.com/axieyangb/aegis/m
 docker compose up -d
 ```
 
-*   Open **`http://localhost:8765`** — default login: `admin` / `changeme` (Change the `ADMIN_PASSWORD` in `docker-compose.yml`!).
+*   Open **`http://localhost:8765`** — default login: `admin` / `changeme` (Change `ADMIN_PASSWORD` in `docker-compose.yml`, or change it in **Settings → Auth** after logging in!).
 
 ### 3. Import the baseline configuration
 
@@ -189,7 +189,7 @@ Depending on your network environment, Aegis supports three main deployment arch
 | `DATA_DIR` | `/data` | Persistent data directory |
 | `ADMIN_USERNAME` | `admin` | Admin username |
 | `ADMIN_PASSWORD` | `aegis` | Admin password — **change this** |
-| `AUTH_ENABLED` | `true` | Require login |
+| `AUTH_ENABLED` | `true` | Require login. Set to `false` to bypass authentication (anonymous mode) |
 | `BLOCK_ENABLED` | `true` | Enable auto IP blocking |
 | `NODE_ID` | `home` | Envoy node ID (must match envoy.yaml) |
 
