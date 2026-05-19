@@ -53,3 +53,10 @@ You should see **"xDS synced"** in green on the Gateway page, confirming Envoy h
 ## 5. Add your first service
 
 Go to **Gateway → Clusters** to configure your backend services, and **Gateway → Listeners** to edit the `https_listener` filter chains to route your domain to your new cluster.
+
+## 6. Expose your Gateway to the Internet
+
+To accept public traffic from the internet, you need to expose Envoy's ports. Refer to the [Deployment Architectures Guide](deployment-architectures.md) to choose and configure your setup:
+*   **Direct Exposure (Port Forwarding):** For static public IP setups.
+*   **VPS Relay Tunnel (PROXY Protocol):** For CGNAT, home labs, or privacy-focused setups (highly recommended to preserve client IPs and prevent auto-blocking your own tunnel!).
+

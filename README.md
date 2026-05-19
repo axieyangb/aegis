@@ -168,6 +168,8 @@ Mount a volume or directory to `/data`:
 ## Docs
 
 *   [Getting started](docs/getting-started.md)
+*   [Deployment Architectures (Exposing Envoy)](docs/deployment-architectures.md)
+*   [Sequence Diagrams (Flow References)](docs/sequence-diagrams.md)
 *   [Envoy configuration](docs/envoy-config.md)
 
 ---
