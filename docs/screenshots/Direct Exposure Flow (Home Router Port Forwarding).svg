@@ -1,0 +1,86 @@
+<svg viewBox="0 0 800 600" width="800" height="600" xmlns="http://www.w3.org/2000/svg" style="background-color: #ffffff; font-family: sans-serif;">
+  <!-- Definitions for arrows -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" />
+    </marker>
+    <marker id="arrow-dashed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Direct Exposure Flow (Home Router Port Forwarding)</text>
+
+  <!-- Lifelines -->
+  <line x1="100" y1="90" x2="100" y2="510" stroke="#999" stroke-dasharray="5,5" />
+  <line x1="300" y1="90" x2="300" y2="510" stroke="#999" stroke-dasharray="5,5" />
+  <line x1="500" y1="90" x2="500" y2="510" stroke="#999" stroke-dasharray="5,5" />
+  <line x1="700" y1="90" x2="700" y2="510" stroke="#999" stroke-dasharray="5,5" />
+
+  <!-- Participant Boxes (Top) -->
+  <rect x="40" y="50" width="120" height="40" rx="5" fill="#e0e0e0" stroke="#999" stroke-width="1.5" />
+  <text x="100" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Client</text>
+
+  <rect x="240" y="50" width="120" height="40" rx="5" fill="#add8e6" stroke="#999" stroke-width="1.5" />
+  <text x="300" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Router</text>
+
+  <rect x="440" y="50" width="120" height="40" rx="5" fill="#fff9c4" stroke="#999" stroke-width="1.5" />
+  <text x="500" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Envoy</text>
+
+  <rect x="640" y="50" width="120" height="40" rx="5" fill="#f8bbd0" stroke="#999" stroke-width="1.5" />
+  <text x="700" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Aegis</text>
+
+  <!-- Note: Bootstrapping Phase -->
+  <rect x="450" y="105" width="230" height="25" rx="3" fill="#c8e6c9" stroke="#999" stroke-width="1" />
+  <text x="565" y="122" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Bootstrapping Phase</text>
+
+  <!-- Envoy -> Aegis: Connect via gRPC xDS -->
+  <line x1="500" y1="150" x2="700" y2="150" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="600" y="145" text-anchor="middle" font-size="12" fill="#333">Connect via gRPC xDS (port 18000)</text>
+
+  <!-- Aegis -> Envoy: Push config -->
+  <line x1="700" y1="180" x2="500" y2="180" stroke="#666" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow)" />
+  <text x="600" y="175" text-anchor="middle" font-size="12" fill="#555">Push http_listener (10080)</text>
+
+  <!-- Note: http_listener live -->
+  <rect x="400" y="205" width="200" height="25" rx="3" fill="#fff9c4" stroke="#999" stroke-width="1" />
+  <text x="500" y="222" text-anchor="middle" font-size="11" fill="#333">http_listener live inside container</text>
+
+  <!-- Note: Traffic Flow -->
+  <rect x="50" y="250" width="700" height="25" rx="3" fill="#c8e6c9" stroke="#999" stroke-width="1" />
+  <text x="400" y="267" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Traffic Flow (HTTP to HTTPS Redirect)</text>
+
+  <!-- Client -> Router: Request port 80 -->
+  <line x1="100" y1="300" x2="300" y2="300" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="200" y="295" text-anchor="middle" font-size="12" fill="#333">Request http://yourdomain.com (port 80)</text>
+
+  <!-- Router -> Envoy: Forward to 10080 -->
+  <line x1="300" y1="330" x2="500" y2="330" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="400" y="325" text-anchor="middle" font-size="12" fill="#333">Forward to Host 80 -> Container 10080</text>
+
+  <!-- Envoy -> Aegis: Stream Access Log -->
+  <line x1="500" y1="360" x2="700" y2="360" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="600" y="355" text-anchor="middle" font-size="12" fill="#333">Stream Access Log (gRPC ALS)</text>
+
+  <!-- Note: Log request -->
+  <rect x="605" y="380" width="180" height="30" rx="3" fill="#e0f7fa" stroke="#999" stroke-width="1" />
+  <text x="695" y="398" text-anchor="middle" font-size="10" fill="#006064">Log request &amp; update dashboard</text>
+
+  <!-- Envoy -> Client: Redirect to HTTPS -->
+  <line x1="500" y1="430" x2="100" y2="430" stroke="#666" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow)" />
+  <text x="300" y="425" text-anchor="middle" font-size="12" fill="#555">Redirect to HTTPS (https://yourdomain.com:443)</text>
+
+  <!-- Participant Boxes (Bottom) -->
+  <rect x="40" y="510" width="120" height="40" rx="5" fill="#e0e0e0" stroke="#999" stroke-width="1.5" />
+  <text x="100" y="535" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Client</text>
+
+  <rect x="240" y="510" width="120" height="40" rx="5" fill="#add8e6" stroke="#999" stroke-width="1.5" />
+  <text x="300" y="535" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Router</text>
+
+  <rect x="440" y="510" width="120" height="40" rx="5" fill="#fff9c4" stroke="#999" stroke-width="1.5" />
+  <text x="500" y="535" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Envoy</text>
+
+  <rect x="640" y="510" width="120" height="40" rx="5" fill="#f8bbd0" stroke="#999" stroke-width="1.5" />
+  <text x="700" y="535" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">Aegis</text>
+</svg>

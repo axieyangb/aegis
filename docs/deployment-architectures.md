@@ -8,9 +8,7 @@ To make Aegis and Envoy accept real public traffic, you need to expose Envoy's p
 
 Use this if you have a **public IPv4 address** (either static or dynamically updated via DDNS) and access to your home router.
 
-```
-Internet ──► Public IP (Router) ──(Port Forward)──► Home Host (Envoy:80/443) ──► backend
-```
+![Direct Exposure Flow](screenshots/Direct%20Exposure%20Flow%20(Home%20Router%20Port%20Forwarding).svg)
 
 ### 1. How to configure it:
 1.  **Static IP / DDNS:** Ensure your router has a public WAN IP. If it's dynamic, configure a Dynamic DNS (DDNS) service (e.g., No-IP, DuckDNS) so your domain always points to your home IP.
@@ -28,9 +26,7 @@ Internet ──► Public IP (Router) ──(Port Forward)──► Home Host (E
 
 Use this if you are behind **CGNAT** (cannot port forward), do not have a public IPv4, or want to **hide your home public IP** for privacy/DDoS protection.
 
-```
-Internet ──► VPS (Public IP) ──(WireGuard Tunnel + PROXY Protocol)──► Home Host (Envoy) ──► backend
-```
+![VPS Relay Flow](screenshots/VPS%20Relay%20Flow%20(PROXY%20Protocol%20&%20AI%20Auto-Blocking).svg)
 
 ### The Client IP Preservation Problem (Crucial for AI Threat Analysis)
 If you use a VPS to proxy traffic to your home Envoy (e.g., using standard Nginx reverse proxy or simple port forwarding), Envoy will see **all incoming traffic as originating from the VPS's internal tunnel IP** (e.g., `10.0.0.1`), rather than the real client's IP.
@@ -72,9 +68,7 @@ This tells Envoy to expect and parse the PROXY protocol header prepended by the 
 
 Use this if you want to expose your gateway **without port forwarding** and benefit from Cloudflare's DDoS protection, CDN, and WAF.
 
-```
-Internet ──► Cloudflare Edge ──(cloudflared Tunnel)──► cloudflared Container ──(HTTP Headers)──► Home Envoy ──► backend
-```
+![Cloudflare Tunnel Flow](screenshots/Cloudflare%20Tunnel%20Flow%20(HTTP%20Headers%20&%20AI%20Auto-Blocking).svg)
 
 ### The Client IP Preservation Problem (Headers vs. PROXY)
 Unlike Nginx stream relays which forward TCP packets directly, Cloudflare Edge acts as an HTTP reverse proxy and terminates the SSL connection. By default, Cloudflare does **not** use the PROXY Protocol (unless you are on an Enterprise plan).
