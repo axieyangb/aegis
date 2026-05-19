@@ -1,0 +1,134 @@
+# Aegis
+
+**Self-hosted Envoy gateway with AI threat analysis, TLS automation, and a real-time security dashboard.**
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/axieyangb/aegis)](https://hub.docker.com/r/axieyangb/aegis)
+[![Docker Image Version](https://img.shields.io/docker/v/axieyangb/aegis?sort=semver)](https://hub.docker.com/r/axieyangb/aegis/tags)
+[![License](https://img.shields.io/badge/license-proprietary-red)](LICENSE)
+
+Aegis sits between the internet and your services. It controls Envoy Proxy via xDS, watches all traffic in real time, blocks malicious IPs automatically, manages TLS certificates, and lets you chat with your gateway through an AI assistant — all in a single Docker container.
+
+---
+
+## Quick start
+
+```bash
+docker run -d \
+  --name aegis \
+  -p 8765:8765 \
+  -v aegis_data:/data \
+  -e ADMIN_PASSWORD=changeme \
+  axieyangb/aegis:latest
+```
+
+Open `http://localhost:8765` — default login: `admin` / `changeme`
+
+### With Envoy (recommended)
+
+```bash
+curl -O https://raw.githubusercontent.com/axieyangb/aegis/main/docker-compose.yml
+curl -O https://raw.githubusercontent.com/axieyangb/aegis/main/configs/starter.json
+docker compose up -d
+```
+
+---
+
+## Features
+
+| | Feature | Description |
+|---|---|---|
+| 🛡 | **Envoy xDS Control Plane** | Visual editor for listeners, clusters, filter chains — pushed live via gRPC |
+| 📊 | **Real-time Analytics** | Live request feed, top IPs, world map, device + status breakdown |
+| 🤖 | **AI Threat Analysis** | Background IP classification using Gemini / Claude / GPT / Ollama. Auto-blocks attackers |
+| 🦉 | **Owl AI Assistant** | Chat with your gateway — ask about traffic, threats, config, anything |
+| 🔒 | **TLS Automation** | ACME (Let's Encrypt, ZeroSSL), HTTP-01 & DNS-01 challenges, auto-renewal via Envoy SDS |
+| 🔔 | **Notifications** | Telegram, Discord, Slack webhooks — alert on blocks, anomalies, daily digest |
+| 🌍 | **Geo Analytics** | Country-level traffic breakdown, remote or local MaxMind GeoIP |
+| 🔑 | **Auth & SSO** | Built-in login + optional OIDC/SSO (Google, Authentik, Keycloak, etc.) |
+| 🔍 | **IP Intelligence** | Per-IP profiles with ASN, ISP, VPN/Tor detection, AbuseIPDB reputation |
+
+---
+
+## Architecture
+
+```
+Internet ──▶ Envoy Proxy ──▶ Your services
+                  │
+          gRPC xDS (port 18000)
+                  │
+             ┌────▼─────┐
+             │  Aegis   │  port 8765
+             │          │
+             │ xDS CP   │  controls Envoy live
+             │ Analytics│  reads Envoy ALS logs
+             │ AI Engine│  classifies IPs
+             │ Cert Mgr │  ACME → Envoy SDS
+             │ Dashboard│  web UI + REST API
+             └──────────┘
+```
+
+---
+
+## Configuration
+
+### Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `PORT` | `8765` | Dashboard + API port |
+| `XDS_PORT` | `18000` | Envoy gRPC xDS port |
+| `DATA_DIR` | `/data` | Persistent data directory |
+| `ADMIN_USERNAME` | `admin` | Admin username |
+| `ADMIN_PASSWORD` | `aegis` | Admin password — **change this** |
+| `AUTH_ENABLED` | `true` | Require login |
+| `BLOCK_ENABLED` | `true` | Enable auto IP blocking |
+| `NODE_ID` | `home` | Envoy node ID (must match envoy.yaml) |
+
+### Data volume
+
+Mount a volume or directory to `/data`:
+
+```
+/data/
+├── aegis.db        ← SQLite (traffic, certs, config, alerts)
+└── skills/         ← Optional: override Owl AI knowledge files
+    └── site.md     ← Custom context injected into Owl's system prompt
+```
+
+---
+
+## Docs
+
+- [Getting started](docs/getting-started.md)
+- [Envoy configuration](docs/envoy-config.md)
+- [AI setup (Owl chat + threat analysis)](docs/ai-setup.md)
+- [Notifications (Telegram, Discord, webhooks)](docs/notifications.md)
+
+---
+
+## Multi-arch
+
+`linux/amd64` and `linux/arm64` — runs on x86 servers, Raspberry Pi, Synology NAS, and Apple Silicon.
+
+```bash
+# Pin a specific version
+docker pull axieyangb/aegis:v1.0.0
+
+# Always latest
+docker pull axieyangb/aegis:latest
+```
+
+---
+
+## License
+
+Aegis is distributed as a compiled binary. Source code is proprietary. See [LICENSE](LICENSE).
+
+Community tier is **free forever**. A Pro license unlocks unlimited notification channels, longer log retention, and unlimited AI patrol sweeps.
+
+---
+
+## Support & Enterprise
+
+- **Issues & feature requests**: [GitHub Issues](https://github.com/axieyangb/aegis/issues)
+- **Enterprise licensing, custom integrations, SLA**: yyangxie@gmail.com

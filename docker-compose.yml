@@ -1,0 +1,44 @@
+services:
+  aegis:
+    image: axieyangb/aegis:latest
+    container_name: aegis
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+    volumes:
+      - aegis_data:/data
+    environment:
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=changeme        # change this
+      - AUTH_ENABLED=true
+      - BLOCK_ENABLED=true
+      - NODE_ID=home
+
+  envoy:
+    image: envoyproxy/envoy:v1.35-latest
+    container_name: envoy
+    restart: unless-stopped
+    depends_on:
+      - aegis
+    ports:
+      - "80:10080"
+      - "443:10443"
+    volumes:
+      - ./configs/starter.json:/etc/envoy/envoy.json:ro
+    command:
+      - /usr/local/bin/envoy
+      - -c
+      - /etc/envoy/envoy.json
+      - --log-level
+      - warn
+    networks:
+      default:
+        aliases:
+          - envoy
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  aegis_data:

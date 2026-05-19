@@ -1,0 +1,31 @@
+Copyright (c) 2026 Yang Yang Xie. All rights reserved.
+
+PROPRIETARY SOFTWARE LICENSE
+
+This software ("Aegis") is provided in compiled binary form only.
+The source code is proprietary and confidential.
+
+PERMITTED USE
+Permission is granted to:
+- Use this software for personal, non-commercial, and internal business purposes
+- Run the software on your own hardware or cloud infrastructure
+- Distribute the unmodified Docker image to your own team members
+
+RESTRICTIONS
+You may not:
+- Redistribute, resell, or sublicense this software to third parties
+- Reverse engineer, decompile, or disassemble the binary
+- Attempt to derive, reconstruct, or access the source code
+- Remove or alter any proprietary notices or labels
+
+PRO LICENSE
+Certain features require a paid Pro license key. Community features are
+available free of charge. See https://github.com/axieyangb/aegis for details.
+
+DISCLAIMER
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+OTHER LIABILITY ARISING FROM USE OF THIS SOFTWARE.
+
+For commercial licensing, enterprise use, or inquiries:
+yyangxie@gmail.com

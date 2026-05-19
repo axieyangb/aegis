@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "exported_at": "2026-01-01T00:00:00Z",
+  "listeners": [
+    {
+      "name": "http_listener",
+      "json_body": "{\"name\": \"http_listener\", \"address\": {\"socketAddress\": {\"address\": \"0.0.0.0\", \"portValue\": 10080}}, \"filterChains\": [{\"filters\": [{\"name\": \"envoy.filters.network.http_connection_manager\", \"typedConfig\": {\"@type\": \"type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager\", \"statPrefix\": \"ingress_http\", \"routeConfig\": {\"virtualHosts\": [{\"name\": \"redirect_to_https\", \"domains\": [\"*\"], \"routes\": [{\"match\": {\"prefix\": \"/.well-known/acme-challenge\"}, \"route\": {\"cluster\": \"acme-renewer\"}}, {\"match\": {\"prefix\": \"/\"}, \"redirect\": {\"httpsRedirect\": true}}]}]}, \"httpFilters\": [{\"name\": \"envoy.filters.http.router\", \"typedConfig\": {\"@type\": \"type.googleapis.com/envoy.extensions.filters.http.router.v3.Router\"}}]}}]}]}",
+      "enabled": true,
+      "updated_at": 0
+    },
+    {
+      "name": "https_listener",
+      "json_body": "{\"name\": \"https_listener\", \"address\": {\"socketAddress\": {\"address\": \"0.0.0.0\", \"portValue\": 10443}}, \"listenerFilters\": [{\"name\": \"envoy.filters.listener.tls_inspector\", \"typedConfig\": {\"@type\": \"type.googleapis.com/envoy.extensions.filters.listener.tls_inspector.v3.TlsInspector\"}}], \"filterChains\": [{\"filterChainMatch\": {\"serverNames\": [\"app.yourdomain.com\"]}, \"filters\": [{\"name\": \"envoy.filters.network.http_connection_manager\", \"typedConfig\": {\"@type\": \"type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager\", \"statPrefix\": \"ingress_https\", \"routeConfig\": {\"virtualHosts\": [{\"name\": \"app_service\", \"domains\": [\"app.yourdomain.com\"], \"routes\": [{\"match\": {\"prefix\": \"/\"}, \"route\": {\"cluster\": \"my-service\", \"timeout\": \"0s\"}}]}]}, \"httpFilters\": [{\"name\": \"envoy.filters.http.router\", \"typedConfig\": {\"@type\": \"type.googleapis.com/envoy.extensions.filters.http.router.v3.Router\"}}], \"upgradeConfigs\": [{\"upgradeType\": \"websocket\"}]}}], \"transportSocket\": {\"name\": \"envoy.transport_sockets.tls\", \"typedConfig\": {\"@type\": \"type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext\", \"commonTlsContext\": {\"tlsCertificateSdsSecretConfigs\": [{\"name\": \"app_yourdomain_com\", \"sdsConfig\": {\"apiConfigSource\": {\"apiType\": \"GRPC\", \"transportApiVersion\": \"V3\", \"grpcServices\": [{\"envoyGrpc\": {\"clusterName\": \"xds_cluster\"}}]}, \"resourceApiVersion\": \"V3\"}}]}}}}]}",
+      "enabled": true,
+      "updated_at": 0
+    }
+  ],
+  "clusters": [
+    {
+      "name": "my-service",
+      "json_body": "{\"name\": \"my-service\", \"type\": \"STATIC\", \"connectTimeout\": \"0.25s\", \"loadAssignment\": {\"clusterName\": \"my-service\", \"endpoints\": [{\"lbEndpoints\": [{\"endpoint\": {\"address\": {\"socketAddress\": {\"address\": \"192.168.1.100\", \"portValue\": 8080}}}}]}]}}",
+      "enabled": true,
+      "updated_at": 0
+    },
+    {
+      "name": "acme-renewer",
+      "json_body": "{\"name\": \"acme-renewer\", \"type\": \"STRICT_DNS\", \"connectTimeout\": \"5s\", \"loadAssignment\": {\"clusterName\": \"acme-renewer\", \"endpoints\": [{\"lbEndpoints\": [{\"endpoint\": {\"address\": {\"socketAddress\": {\"address\": \"aegis\", \"portValue\": 8765}}}}]}]}}",
+      "enabled": true,
+      "updated_at": 0
+    }
+  ],
+  "secrets": [],
+  "extension_configs": []
+}
