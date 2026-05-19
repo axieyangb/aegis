@@ -181,7 +181,15 @@ Community tier is **free forever**. A Pro license unlocks unlimited notification
 
 ---
 
+## About the Author
+
+Aegis is designed and built by **Jerry Xie** — formerly a network security engineer at **Palo Alto Networks**, now a Senior Software Engineer specialising in identity, distributed cloud, Kubernetes, networking, and AI.
+
+Outside of work: smart home automation, DIY racing drones, home lab tinkering, 3D printing, CNC machining, PCB design, and robotics. Aegis started as a home lab project and grew into a product.
+
+---
+
 ## Support & Enterprise
 
 - **Issues & feature requests**: [GitHub Issues](https://github.com/axieyangb/aegis/issues)
-- **Enterprise licensing, custom integrations, SLA**: yyangxie@gmail.com
+- **Enterprise collaboration, custom integrations, or just want to know more**: [yyangxie@gmail.com](mailto:yyangxie@gmail.com)
