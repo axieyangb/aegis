@@ -2,13 +2,17 @@
   <img src="docs/logo.svg" alt="Aegis" width="80" />
 </p>
 
-# Aegis
+<h1 align="center">Aegis</h1>
 
-**Self-hosted Envoy gateway with AI threat analysis, TLS automation, and a real-time security dashboard.**
+<p align="center">
+  <strong>Self-hosted Envoy gateway with AI threat analysis, TLS automation, and a real-time security dashboard.</strong>
+</p>
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/axieyangb/aegis)](https://hub.docker.com/r/axieyangb/aegis)
-[![Docker Image Version](https://img.shields.io/docker/v/axieyangb/aegis?sort=semver)](https://hub.docker.com/r/axieyangb/aegis/tags)
-[![License](https://img.shields.io/badge/license-proprietary-red)](LICENSE)
+<p align="center">
+  <a href="https://hub.docker.com/r/axieyangb/aegis"><img src="https://img.shields.io/docker/pulls/axieyangb/aegis" alt="Docker Pulls"></a>
+  <a href="https://hub.docker.com/r/axieyangb/aegis/tags"><img src="https://img.shields.io/docker/v/axieyangb/aegis?sort=semver" alt="Docker Image Version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-red" alt="License"></a>
+</p>
 
 Aegis sits between the internet and your services. It controls Envoy Proxy via xDS, watches all traffic in real time, blocks malicious IPs automatically, manages TLS certificates, and lets you chat with your gateway through an AI assistant — all in a single Docker container.
 
