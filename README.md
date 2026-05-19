@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/logo.svg" alt="Aegis" width="80" />
+</p>
+
 # Aegis
 
 **Self-hosted Envoy gateway with AI threat analysis, TLS automation, and a real-time security dashboard.**

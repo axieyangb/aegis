@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <!-- Darker navy top, vibrant purple bottom -->
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#12187a" />
+      <stop offset="100%" stop-color="#8b25f0" />
+    </linearGradient>
+
+    <!-- Subtle 3D highlight -->
+    <radialGradient id="shieldHighlight" cx="30%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Horizontal fade for the laser core so edges aren't too bright -->
+    <linearGradient id="flareFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0" />
+      <stop offset="15%" stop-color="#ffffff" stop-opacity="0.1" />
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="1" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="85%" stop-color="#ffffff" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Glow filters for the laser -->
+    <filter id="glowDeep" x="-50%" y="-500%" width="200%" height="1100%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+    <filter id="glowSharp" x="-50%" y="-500%" width="200%" height="1100%">
+      <feGaussianBlur stdDeviation="1.5"/>
+    </filter>
+  </defs>
+
+  <!-- Shield Background with tightly rounded corners and concave sweeping top -->
+  <path d="M 20 50 
+           L 20 30 
+           Q 20 26 24 25 
+           Q 36 22 50 14 
+           Q 64 22 76 25 
+           Q 80 26 80 30 
+           L 80 50 
+           Q 80 84 50 96 
+           Q 20 84 20 50 Z" 
+        fill="url(#shieldGrad)" />
+        
+  <!-- Shield 3D Highlight -->
+  <path d="M 20 50 
+           L 20 30 
+           Q 20 26 24 25 
+           Q 36 22 50 14 
+           Q 64 22 76 25 
+           Q 80 26 80 30 
+           L 80 50 
+           Q 80 84 50 96 
+           Q 20 84 20 50 Z" 
+        fill="url(#shieldHighlight)" />
+
+  <!-- The A (Thin, wide stance) -->
+  <polygon points="50,26 30,76 36,76 50,41 64,76 70,76" fill="#ffffff" />
+
+  <!-- Laser Spark Glows -->
+  <!-- Wide, faint cyan aura -->
+  <ellipse cx="50" cy="62" rx="30" ry="4" fill="#00ffff" opacity="0.6" filter="url(#glowDeep)" />
+  <!-- Tighter, brighter cyan core glow -->
+  <ellipse cx="50" cy="62" rx="18" ry="1.5" fill="#00ffff" filter="url(#glowSharp)" />
+  <!-- Intense cyan halo for the center spark -->
+  <ellipse cx="50" cy="62" rx="6" ry="2.5" fill="#00ffff" filter="url(#glowSharp)" />
+  
+  <!-- Optical Flare White Core -->
+  <!-- Longest, thinnest needle fading out at edges -->
+  <ellipse cx="50" cy="62" rx="28" ry="0.4" fill="url(#flareFade)" />
+  <!-- Mid-length bright flare fading out at edges -->
+  <ellipse cx="50" cy="62" rx="14" ry="0.7" fill="url(#flareFade)" />
+  <!-- Solid white center hotspot -->
+  <ellipse cx="50" cy="62" rx="3" ry="1.4" fill="#ffffff" />
+
+</svg>
