@@ -9,9 +9,19 @@
 
 ## 1. Download the starter files
 
+Create a new directory for Aegis and download the required configuration files:
+
 ```bash
 mkdir aegis && cd aegis
+
+# Download docker-compose config
 curl -O https://raw.githubusercontent.com/axieyangb/aegis/main/docker-compose.yml
+
+# Download Envoy bootstrap configuration
+mkdir envoy
+curl -o envoy/envoy.yaml https://raw.githubusercontent.com/axieyangb/aegis/main/envoy/envoy.yaml
+
+# Download baseline database configuration
 mkdir configs
 curl -o configs/starter.json https://raw.githubusercontent.com/axieyangb/aegis/main/configs/starter.json
 ```
@@ -20,39 +30,26 @@ curl -o configs/starter.json https://raw.githubusercontent.com/axieyangb/aegis/m
 
 Edit `docker-compose.yml` and change `ADMIN_PASSWORD=changeme` to something secure.
 
-## 3. Start
+## 3. Start the gateway
 
 ```bash
 docker compose up -d
 ```
 
-Aegis dashboard: `http://localhost:8765`
-Default login: `admin` / (your password)
+*   Aegis dashboard: `http://localhost:8765`
+*   Default login: `admin` / (your password)
 
-## 4. Connect Envoy to Aegis
+## 4. Connect Envoy to Aegis (Importing baseline)
 
-The starter config in `configs/starter.json` already points Envoy's xDS endpoint at `aegis:18000`. Envoy will connect automatically once both containers are running.
+1.  Open the Aegis dashboard in your browser.
+2.  Go to **Gateway** page.
+3.  Click the **Import** button at the top right.
+4.  Upload the `configs/starter.json` file you downloaded in Step 1.
 
-Open **Gateway** in the dashboard — you should see "xDS synced" in green.
+This will seed Aegis's database with a standard baseline configuration (a port 80 listener that redirects to HTTPS and handles ACME challenges). Aegis will immediately generate the correct Envoy configuration and push it to Envoy via xDS.
 
-## 5. Add your first listener
+You should see **"xDS synced"** in green on the Gateway page, confirming Envoy has successfully connected and loaded the configuration!
 
-Go to **Gateway → Listeners → Add filter chain**. Configure your domain, backend cluster, and TLS secret. Changes push to Envoy immediately.
+## 5. Add your first service
 
-## 6. Issue a TLS certificate
-
-Go to **Certificates → Add Provider** and configure an ACME provider (Let's Encrypt + HTTP-01 is the easiest). Then **Issue Certificate** for your domain.
-
-> **Note:** HTTP-01 requires the `acme-renewer` cluster and a port-80 filter chain. Open the Owl chat and say "Help me set up HTTP-01" — it will walk you through the gateway configuration.
-
-## 7. Enable AI (optional)
-
-Go to **Settings → AI**, enable Intelligence Review, and enter an API key for your chosen provider (Gemini, Claude, OpenAI, DeepSeek, or Ollama for local inference). Aegis will start classifying IPs in the background.
-
-Enable **Owl Chat** to talk to your gateway in natural language.
-
-## Next steps
-
-- [Envoy configuration reference](envoy-config.md)
-- [AI setup](ai-setup.md)
-- [Notifications](notifications.md)
+Go to **Gateway → Clusters** to configure your backend services, and **Gateway → Listeners** to edit the `https_listener` filter chains to route your domain to your new cluster.

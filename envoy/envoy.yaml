@@ -1,0 +1,50 @@
+node:
+  id: home
+  cluster: aegis
+
+# All dynamic resources (listeners, clusters, secrets) come from Aegis via ADS.
+dynamic_resources:
+  ads_config:
+    api_type: GRPC
+    transport_api_version: V3
+    grpc_services:
+      - envoy_grpc:
+          cluster_name: xds_cluster
+  lds_config:
+    resource_api_version: V3
+    ads: {}
+  cds_config:
+    resource_api_version: V3
+    ads: {}
+
+static_resources:
+  clusters:
+    # xds_cluster is the only static cluster — used for both xDS and ALS gRPC to Aegis.
+    - name: xds_cluster
+      type: STRICT_DNS
+      connect_timeout: 5s
+      typed_extension_protocol_options:
+        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+          explicit_http_config:
+            http2_protocol_options: {}
+      load_assignment:
+        cluster_name: xds_cluster
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: aegis
+                      port_value: 18000
+
+admin:
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
+  access_log:
+    - name: envoy.access_loggers.file
+      typed_config:
+        "@type": type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
+        path: /dev/null

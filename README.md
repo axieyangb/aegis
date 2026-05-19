@@ -20,24 +20,39 @@ Aegis sits between the internet and your services. It controls Envoy Proxy via x
 
 ## Quick start
 
+### 1. Download the starter files
+
+Create a directory and download the required files:
+
 ```bash
-docker run -d \
-  --name aegis \
-  -p 8765:8765 \
-  -v aegis_data:/data \
-  -e ADMIN_PASSWORD=changeme \
-  axieyangb/aegis:latest
+mkdir aegis && cd aegis
+
+# Download docker-compose config
+curl -O https://raw.githubusercontent.com/axieyangb/aegis/main/docker-compose.yml
+
+# Download Envoy static bootstrap config
+mkdir envoy
+curl -o envoy/envoy.yaml https://raw.githubusercontent.com/axieyangb/aegis/main/envoy/envoy.yaml
+
+# Download baseline database configuration
+mkdir configs
+curl -o configs/starter.json https://raw.githubusercontent.com/axieyangb/aegis/main/configs/starter.json
 ```
 
-Open `http://localhost:8765` — default login: `admin` / `changeme`
-
-### With Envoy (recommended)
+### 2. Start the gateway
 
 ```bash
-curl -O https://raw.githubusercontent.com/axieyangb/aegis/main/docker-compose.yml
-curl -O https://raw.githubusercontent.com/axieyangb/aegis/main/configs/starter.json
 docker compose up -d
 ```
+
+*   Open **`http://localhost:8765`** — default login: `admin` / `changeme` (Change the `ADMIN_PASSWORD` in `docker-compose.yml`!).
+
+### 3. Import the baseline configuration
+
+*   Go to the **Gateway** page in the dashboard.
+*   Click the **Import** button at the top right.
+*   Upload the `configs/starter.json` file you downloaded.
+*   You should see the `http_listener` and `https_listener` appear, and the xDS sync status turn green!
 
 ---
 
@@ -152,10 +167,8 @@ Mount a volume or directory to `/data`:
 
 ## Docs
 
-- [Getting started](docs/getting-started.md)
-- [Envoy configuration](docs/envoy-config.md)
-- [AI setup (Owl chat + threat analysis)](docs/ai-setup.md)
-- [Notifications (Telegram, Discord, webhooks)](docs/notifications.md)
+*   [Getting started](docs/getting-started.md)
+*   [Envoy configuration](docs/envoy-config.md)
 
 ---
 
@@ -191,5 +204,5 @@ Outside of work: smart home automation, DIY racing drones, home lab tinkering, 3
 
 ## Support & Enterprise
 
-- **Issues & feature requests**: [GitHub Issues](https://github.com/axieyangb/aegis/issues)
-- **Enterprise collaboration, custom integrations, or just want to know more**: [yyangxie@gmail.com](mailto:yyangxie@gmail.com)
+*   **Issues & feature requests**: [GitHub Issues](https://github.com/axieyangb/aegis/issues)
+*   **Enterprise collaboration, custom integrations, or just want to know more**: [yyangxie@gmail.com](mailto:yyangxie@gmail.com)

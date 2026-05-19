@@ -24,11 +24,11 @@ services:
       - "80:10080"
       - "443:10443"
     volumes:
-      - ./configs/starter.json:/etc/envoy/envoy.json:ro
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
     command:
       - /usr/local/bin/envoy
       - -c
-      - /etc/envoy/envoy.json
+      - /etc/envoy/envoy.yaml
       - --log-level
       - warn
     networks:
