@@ -68,11 +68,19 @@ If you are running Aegis locally without real traffic, you can use our built-in 
     *   *(Optional: If you downloaded the quick-start files via curl, you can download the demo config using: `curl -o configs/demo.json https://raw.githubusercontent.com/axieyangb/aegis/main/configs/demo.json`)*
     *   This automatically configures Envoy's HTTP listener to accept spoofed client IPs via PROXY Protocol.
 
-### 2. Run the Generator
-From the repository root, run the self-contained Python script:
+### 2. Download and Run the Generator
+
+If you didn't clone the repository, you can download the self-contained Python script first:
+```bash
+mkdir -p scripts
+curl -o scripts/demo_generator.py https://raw.githubusercontent.com/axieyangb/aegis/main/scripts/demo_generator.py
+```
+
+Then, run the generator from the repository root:
 ```bash
 python3 scripts/demo_generator.py
 ```
+
 
 ### 3. Watch the Dashboard Live!
 Open your dashboard and watch:
