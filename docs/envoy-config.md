@@ -29,3 +29,21 @@ The `configs/starter.json` is **not** read by Envoy. It is an export of the Aegi
 *   `my-service` cluster: Placeholder for your actual backend application.
 
 Once imported, Aegis dynamically translates these into Envoy-native config and pushes them to Envoy over the xDS channel.
+
+## Exposing Envoy to Public Traffic (Port Mapping)
+
+To make your gateway accept real public traffic from the internet, you must understand how ports are mapped between your host machine and the Envoy container.
+
+### The Port Flow
+```
+Internet ──► Host Port 80  ──────(Docker Map)─────► Container Port 10080 (Envoy HTTP Listener)
+Internet ──► Host Port 443 ──────(Docker Map)─────► Container Port 10443 (Envoy HTTPS Listener)
+```
+
+1.  **Docker Port Mapping:** In `docker-compose.yml`, the `envoy` service exposes ports `80` and `443` on the host, mapping them to `10080` and `10443` inside the container respectively.
+    *   This is done because binding to privileged ports (< 1024) directly inside a container is restricted by default for security.
+2.  **UI Port Binding:** When you create or edit Listeners in the **Aegis UI**, you must bind them to the **container port**, NOT the host port:
+    *   Your HTTP listener (handling redirects and ACME challenge) must bind to **`10080`**.
+    *   Your HTTPS listener (handling secure SSL traffic) must bind to **`10443`**.
+3.  **Public Access:** Once the containers are running, simply point your domain's DNS `A` or `AAAA` records to your host machine's public IP address. Traffic arriving at port 80/443 will automatically flow through Envoy.
+

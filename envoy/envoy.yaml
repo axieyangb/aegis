@@ -35,7 +35,7 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      address: aegis
+                      address: aegis-gateway
                       port_value: 18000
 
 admin:
