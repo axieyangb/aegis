@@ -3,7 +3,7 @@
 | # | Tutorial | Description |
 |---|---|---|
 | **1** | **Local HTTPS with a whoami service** ← you are here | Configure the gateway manually through the UI |
-| 2 | [Configure the Gateway with Owl AI](whoami-ai-setup.md) | Let Owl AI do the configuration for you |
+| 2 | [Configure the Gateway with Owl AI](02-whoami-ai-setup.md) | Let Owl AI do the configuration for you |
 
 ---
 
@@ -201,5 +201,5 @@ To remove the setup:
 
 ## Next
 
-**[Part 2 → Configure the Gateway with Owl AI](whoami-ai-setup.md)**
+**[Part 2 → Configure the Gateway with Owl AI](02-whoami-ai-setup.md)**
 You've seen how to set this up manually. In the next tutorial, you hand a single prompt to Owl AI and it configures the cluster, certificate, and filter chain for you — no UI clicks required.

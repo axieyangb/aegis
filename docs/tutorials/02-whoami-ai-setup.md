@@ -2,14 +2,14 @@
 
 | # | Tutorial | Description |
 |---|---|---|
-| 1 | [Local HTTPS with a whoami service](whoami-local-https.md) | Configure the gateway manually through the UI |
+| 1 | [Local HTTPS with a whoami service](01-whoami-local-https.md) | Configure the gateway manually through the UI |
 | **2** | **Configure the Gateway with Owl AI** ← you are here | Let Owl AI do the configuration for you |
 
 ---
 
 # Part 2 — Configure the Gateway with Owl AI
 
-> **Prerequisite:** Complete [Part 1 — Local HTTPS with a whoami service](whoami-local-https.md) first to understand what we're building. This tutorial sets up the same thing — but Owl AI does the configuration for you.
+> **Prerequisite:** Complete [Part 1 — Local HTTPS with a whoami service](01-whoami-local-https.md) first to understand what we're building. This tutorial sets up the same thing — but Owl AI does the configuration for you.
 
 Instead of clicking through the UI, you describe what you want to Owl and it handles the gateway configuration end-to-end: cluster, certificate, and filter chain.
 
@@ -163,4 +163,4 @@ Or do it manually:
 
 ---
 
-**← [Part 1 — Local HTTPS with a whoami service](whoami-local-https.md)**
+**← [Part 1 — Local HTTPS with a whoami service](01-whoami-local-https.md)**
