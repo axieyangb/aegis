@@ -31,6 +31,8 @@ docker run -d --name whoami -p 8081:80 --restart unless-stopped traefik/whoami
 
 It runs independently — no changes to your existing `docker-compose.yml` needed.
 
+![Run whoami container](assets/step1-run-whoami.gif)
+
 ---
 
 ## Step 2 — Add a cluster in Aegis
@@ -48,6 +50,8 @@ Open the Aegis dashboard → **Gateway → Clusters → Add Cluster**.
 > **Mac / Docker Desktop only:** expand **Advanced parameters** and add `{"dnsLookupFamily":"V4_ONLY"}` — Docker Desktop resolves `host.docker.internal` to IPv6 first, which breaks connections to IPv4-only containers.
 
 Save — Aegis pushes the cluster to Envoy immediately.
+
+![Add whoami cluster in Aegis](assets/step2-add-cluster.gif)
 
 ---
 
@@ -69,6 +73,8 @@ Go to **Certificates → Managed Certs → Issue Certificate**:
 
 Click **Issue**. The cert is generated and pushed to Envoy SDS within a second. Note the **secret name** shown (e.g. `tls-whoami-local`).
 
+![Issue certificate from Local CA](assets/step3-issue-cert.gif)
+
 ---
 
 ## Step 4 — Add a filter chain to the HTTPS listener
@@ -85,32 +91,42 @@ Click **Add Filter Chain** and fill in:
 
 Leave Route Prefix as `/` and click **Add**. Envoy picks up the new filter chain within ~1 second.
 
+![Add filter chain to HTTPS listener](assets/step4-add-filter-chain.gif)
+
 ---
 
 ## Step 5 — Trust the Root CA
 
-Download the Root CA certificate and install it in your OS trust store.
+First, download the Root CA certificate. You can do this two ways:
+
+**Option A — from the UI:** Go to **Certificates → Signing Providers**, click **Download CA Cert** next to your Local CA provider. This downloads `aegis-local-ca.crt` directly from the browser.
+
+**Option B — via curl:**
+```bash
+curl -s http://localhost:8765/api/certs/ca -o aegis-local-ca.crt
+```
+
+Then install it in your OS trust store:
 
 **macOS:**
 ```bash
-curl -s http://localhost:8765/api/certs/ca -o aegis-local-ca.crt
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain aegis-local-ca.crt
 ```
 
 **Linux:**
 ```bash
-curl -s http://localhost:8765/api/certs/ca -o aegis-local-ca.crt
 sudo cp aegis-local-ca.crt /usr/local/share/ca-certificates/aegis-local-ca.crt
 sudo update-ca-certificates
 ```
 
 **Windows (PowerShell as Administrator):**
 ```powershell
-Invoke-WebRequest http://localhost:8765/api/certs/ca -OutFile aegis-local-ca.crt
 Import-Certificate -FilePath aegis-local-ca.crt -CertStoreLocation Cert:\LocalMachine\Root
 ```
 
 Restart your browser after installing the CA.
+
+![Download and trust the Root CA](assets/step5-trust-ca.gif)
 
 ---
 
@@ -131,6 +147,8 @@ echo "192.168.1.100  whoami.local" | sudo tee -a /etc/hosts
 
 On Windows, edit `C:\Windows\System32\drivers\etc\hosts` as Administrator.
 
+![Add whoami.local to /etc/hosts](assets/step6-etc-hosts.gif)
+
 ---
 
 ## Step 7 — Open in browser
@@ -138,6 +156,8 @@ On Windows, edit `C:\Windows\System32\drivers\etc\hosts` as Administrator.
 Navigate to **`https://whoami.local`**.
 
 You should see the whoami response — hostname, IP, headers — served over HTTPS with a valid (locally trusted) certificate and no browser warning.
+
+![whoami.local trusted in browser](assets/step7-browser-verify.gif)
 
 ---
 
