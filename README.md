@@ -163,6 +163,7 @@ Data is persisted at `/data/aegis.db` (SQLite). Mount a volume to keep data acro
 |---|---|---|
 | 01 | [Local HTTPS with a whoami service](docs/tutorials/01-whoami-local-https.md) | Configure the gateway manually through the UI |
 | 02 | [Configure the Gateway with Owl AI](docs/tutorials/02-whoami-ai-setup.md) | Same setup — let Owl AI do the configuration from a single prompt |
+| 03 | [Understanding the Dashboard](docs/tutorials/03-understanding-the-dashboard.md) | Read live traffic data and analyse request patterns with Owl |
 
 ---
 

@@ -164,3 +164,5 @@ Or do it manually:
 ---
 
 **← [Part 1 — Local HTTPS with a whoami service](01-whoami-local-https.md)**
+
+**[Part 3 → Understanding the Dashboard](03-understanding-the-dashboard.md)**
