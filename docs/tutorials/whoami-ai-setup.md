@@ -1,6 +1,15 @@
-# Tutorial: Configure the Gateway with Owl AI
+# Tutorial Series: Exposing a Service with Aegis
 
-> **Prerequisite:** Complete the [Local HTTPS with whoami](tutorial-whoami-local-https.md) tutorial first to understand what we're building. This tutorial sets up the same thing — but Owl AI does the configuration for you.
+| # | Tutorial | Description |
+|---|---|---|
+| 1 | [Local HTTPS with a whoami service](whoami-local-https.md) | Configure the gateway manually through the UI |
+| **2** | **Configure the Gateway with Owl AI** ← you are here | Let Owl AI do the configuration for you |
+
+---
+
+# Part 2 — Configure the Gateway with Owl AI
+
+> **Prerequisite:** Complete [Part 1 — Local HTTPS with a whoami service](whoami-local-https.md) first to understand what we're building. This tutorial sets up the same thing — but Owl AI does the configuration for you.
 
 Instead of clicking through the UI, you describe what you want to Owl and it handles the gateway configuration end-to-end: cluster, certificate, and filter chain.
 
@@ -22,7 +31,7 @@ Instead of clicking through the UI, you describe what you want to Owl and it han
 
 Go to **Settings → AI → Owl Chat**, enable it, pick a provider (e.g. Gemini), enter your API key, and save. Owl will immediately show as ready (green dot).
 
-![Configure Gemini API key for Owl Chat](assets/owl-ai-setup-demo.gif)
+![Configure Gemini API key for Owl Chat](../assets/owl-ai-setup-demo.gif)
 
 Once configured you can ask Owl questions about recent traffic — it has live access to your gateway logs and threat intelligence.
 
@@ -53,7 +62,7 @@ using the issued cert's secret name.
 
 Owl will walk through each step, confirm with you before making changes, and report back when done.
 
-![Owl AI configuring the whoami gateway](assets/owl-ai-gateway-setup.gif)
+![Owl AI configuring the whoami gateway](../assets/owl-ai-gateway-setup.gif)
 
 ---
 
@@ -151,3 +160,7 @@ Or do it manually:
 3. Delete the `whoami` cluster in Gateway → Clusters
 4. Remove the `/etc/hosts` line
 5. Stop the whoami container: `docker rm -f whoami`
+
+---
+
+**← [Part 1 — Local HTTPS with a whoami service](whoami-local-https.md)**

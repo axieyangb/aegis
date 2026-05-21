@@ -1,6 +1,15 @@
-# Tutorial: Local HTTPS with a whoami service
+# Tutorial Series: Exposing a Service with Aegis
 
-> **Prerequisite:** Before starting this tutorial, make sure your Aegis gateway and Envoy are up and running. Follow the [Getting Started](getting-started.md) guide first — this tutorial picks up from a working gateway.
+| # | Tutorial | Description |
+|---|---|---|
+| **1** | **Local HTTPS with a whoami service** ← you are here | Configure the gateway manually through the UI |
+| 2 | [Configure the Gateway with Owl AI](whoami-ai-setup.md) | Let Owl AI do the configuration for you |
+
+---
+
+# Part 1 — Local HTTPS with a whoami service
+
+> **Prerequisite:** Before starting this tutorial, make sure your Aegis gateway and Envoy are up and running. Follow the [Getting Started](../getting-started.md) guide first — this tutorial picks up from a working gateway.
 
 This tutorial walks through deploying a simple whoami web service and exposing it over HTTPS through Envoy, using Aegis's built-in Local CA — no public domain or open ports required.
 
@@ -31,7 +40,7 @@ docker run -d --name whoami -p 8081:80 --restart unless-stopped traefik/whoami
 
 It runs independently — no changes to your existing `docker-compose.yml` needed.
 
-![Run whoami container](assets/step1-run-whoami.gif)
+![Run whoami container](../assets/step1-run-whoami.gif)
 
 ---
 
@@ -51,7 +60,7 @@ Open the Aegis dashboard → **Gateway → Clusters → Add Cluster**.
 
 Save — Aegis pushes the cluster to Envoy immediately.
 
-![Add whoami cluster in Aegis](assets/step2-add-cluster.gif)
+![Add whoami cluster in Aegis](../assets/step2-add-cluster.gif)
 
 ---
 
@@ -73,7 +82,7 @@ Go to **Certificates → Managed Certs → Issue Certificate**:
 
 Click **Issue**. The cert is generated and pushed to Envoy SDS within a second. Note the **secret name** shown (e.g. `tls-whoami-local`).
 
-![Issue certificate from Local CA](assets/step3-issue-cert.gif)
+![Issue certificate from Local CA](../assets/step3-issue-cert.gif)
 
 ---
 
@@ -91,7 +100,7 @@ Click **Add Filter Chain** and fill in:
 
 Leave Route Prefix as `/` and click **Add**. Envoy picks up the new filter chain within ~1 second.
 
-![Add filter chain to HTTPS listener](assets/step4-add-filter-chain.gif)
+![Add filter chain to HTTPS listener](../assets/step4-add-filter-chain.gif)
 
 ---
 
@@ -126,7 +135,7 @@ Import-Certificate -FilePath aegis-local-ca.crt -CertStoreLocation Cert:\LocalMa
 
 Restart your browser after installing the CA.
 
-![Download and trust the Root CA](assets/step5-trust-ca.gif)
+![Download and trust the Root CA](../assets/step5-trust-ca.gif)
 
 ---
 
@@ -147,7 +156,7 @@ echo "192.168.1.100  whoami.local" | sudo tee -a /etc/hosts
 
 On Windows, edit `C:\Windows\System32\drivers\etc\hosts` as Administrator.
 
-![Add whoami.local to /etc/hosts](assets/step6-etc-hosts.gif)
+![Add whoami.local to /etc/hosts](../assets/step6-etc-hosts.gif)
 
 ---
 
@@ -157,7 +166,7 @@ Navigate to **`https://whoami.local`**.
 
 You should see the whoami response — hostname, IP, headers — served over HTTPS with a valid (locally trusted) certificate and no browser warning.
 
-![whoami.local trusted in browser](assets/step7-browser-verify.gif)
+![whoami.local trusted in browser](../assets/step7-browser-verify.gif)
 
 ---
 
@@ -187,3 +196,10 @@ To remove the setup:
 3. Delete the `whoami` cluster
 4. Remove the `/etc/hosts` line
 5. Stop the whoami container: `docker rm -f whoami`
+
+---
+
+## Next
+
+**[Part 2 → Configure the Gateway with Owl AI](whoami-ai-setup.md)**
+You've seen how to set this up manually. In the next tutorial, you hand a single prompt to Owl AI and it configures the cluster, certificate, and filter chain for you — no UI clicks required.
