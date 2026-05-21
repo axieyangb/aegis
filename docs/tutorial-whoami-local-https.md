@@ -23,22 +23,21 @@ This tutorial walks through deploying a simple whoami web service and exposing i
 
 ## Step 1 — Run the whoami container
 
-Open your `docker-compose.yml` and add the `whoami` service under the `services:` block, alongside the existing `aegis` and `envoy` entries:
+Run these commands from the same directory as your `docker-compose.yml`:
 
-```yaml
+```bash
+cat >> docker-compose.yml << 'EOF'
+
   whoami:
     image: traefik/whoami
     container_name: whoami
     restart: unless-stopped
-```
+EOF
 
-No ports need to be published — Envoy will reach `whoami` over the internal Docker network.
-
-Apply the change:
-
-```bash
 docker compose up -d whoami
 ```
+
+No ports need to be published — Envoy reaches `whoami` over the internal Docker network.
 
 ---
 
@@ -96,22 +95,28 @@ Leave Route Prefix as `/` and click **Add**. Envoy picks up the new filter chain
 
 ## Step 5 — Trust the Root CA
 
-Download the Root CA certificate: **Certificates → Local CA → Download CA** (saves `aegis-local-ca.crt`).
+Download the Root CA certificate and install it in your OS trust store.
 
 **macOS:**
 ```bash
+curl -s http://localhost:8765/api/certs/ca -o aegis-local-ca.crt
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain aegis-local-ca.crt
 ```
 
 **Linux:**
 ```bash
+curl -s http://localhost:8765/api/certs/ca -o aegis-local-ca.crt
 sudo cp aegis-local-ca.crt /usr/local/share/ca-certificates/aegis-local-ca.crt
 sudo update-ca-certificates
 ```
 
-**Windows:** double-click the `.crt` file → Install Certificate → Local Machine → Trusted Root Certification Authorities.
+**Windows (PowerShell as Administrator):**
+```powershell
+Invoke-WebRequest http://localhost:8765/api/certs/ca -OutFile aegis-local-ca.crt
+Import-Certificate -FilePath aegis-local-ca.crt -CertStoreLocation Cert:\LocalMachine\Root
+```
 
-After installing the CA you may need to restart your browser.
+Restart your browser after installing the CA.
 
 ---
 
