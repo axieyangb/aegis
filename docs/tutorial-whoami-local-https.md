@@ -23,22 +23,13 @@ This tutorial walks through deploying a simple whoami web service and exposing i
 
 ## Step 1 — Run the whoami container
 
-Add `whoami` to your existing `docker-compose.yml` under the `services:` block:
-
-```yaml
-  whoami:
-    image: traefik/whoami
-    container_name: whoami
-    restart: unless-stopped
-```
-
-Then start it:
+Start `whoami` as a standalone container with a published port:
 
 ```bash
-docker compose up -d whoami
+docker run -d --name whoami -p 8081:80 --restart unless-stopped traefik/whoami
 ```
 
-Because it's in the same Compose file, `whoami` joins the same Docker network as Envoy and is reachable by its service name — no ports need to be published.
+It runs independently — no changes to your existing `docker-compose.yml` needed.
 
 ---
 
@@ -50,8 +41,8 @@ Open the Aegis dashboard → **Gateway → Clusters → Add Cluster**.
 |---|---|
 | Name | `whoami` |
 | Type | `STRICT_DNS` |
-| Host | `whoami` _(Docker service name)_ |
-| Port | `80` |
+| Host | `host.docker.internal` |
+| Port | `8081` |
 | Connect timeout | `5s` |
 
 Save — Aegis pushes the cluster to Envoy immediately.
@@ -173,4 +164,4 @@ To remove the setup:
 2. Remove the filter chain from `https_listener`
 3. Delete the `whoami` cluster
 4. Remove the `/etc/hosts` line
-5. Stop the whoami container: `docker compose stop whoami`
+5. Stop the whoami container: `docker rm -f whoami`
