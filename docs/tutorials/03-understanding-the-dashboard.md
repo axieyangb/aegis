@@ -96,3 +96,5 @@ Explore from here:
 ---
 
 **← [Part 2 — Configure the Gateway with Owl AI](02-whoami-ai-setup.md)**
+
+**[Part 4 → AI-Driven Protection](04-ai-driven-protection.md)**

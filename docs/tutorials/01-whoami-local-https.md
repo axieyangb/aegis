@@ -5,6 +5,7 @@
 | **1** | **Local HTTPS with a whoami service** ← you are here | Configure the gateway manually through the UI |
 | 2 | [Configure the Gateway with Owl AI](02-whoami-ai-setup.md) | Let Owl AI do the configuration for you |
 | 3 | [Understanding the Dashboard](03-understanding-the-dashboard.md) | Read live traffic data and analyse request patterns with Owl |
+| 4 | [AI-Driven Protection](04-ai-driven-protection.md) | Use Owl to disable a service under attack and re-enable it |
 
 ---
 
