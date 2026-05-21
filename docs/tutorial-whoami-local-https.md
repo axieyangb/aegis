@@ -23,21 +23,22 @@ This tutorial walks through deploying a simple whoami web service and exposing i
 
 ## Step 1 — Run the whoami container
 
-From the same directory as your `docker-compose.yml`, create an override file and start the container:
+Add `whoami` to your existing `docker-compose.yml` under the `services:` block:
 
-```bash
-cat > docker-compose.override.yml << 'EOF'
-services:
+```yaml
   whoami:
     image: traefik/whoami
     container_name: whoami
     restart: unless-stopped
-EOF
+```
 
+Then start it:
+
+```bash
 docker compose up -d whoami
 ```
 
-Docker Compose automatically merges `docker-compose.override.yml` with your existing `docker-compose.yml` — no ports need to be published, Envoy reaches `whoami` over the internal Docker network.
+Because it's in the same Compose file, `whoami` joins the same Docker network as Envoy and is reachable by its service name — no ports need to be published.
 
 ---
 
