@@ -44,7 +44,8 @@ Open the Aegis dashboard → **Gateway → Clusters → Add Cluster**.
 | Host | `host.docker.internal` |
 | Port | `8081` |
 | Connect timeout | `5s` |
-| DNS Lookup Family | `V4_ONLY` |
+
+> **Mac / Docker Desktop only:** expand **Advanced parameters** and add `{"dnsLookupFamily":"V4_ONLY"}` — Docker Desktop resolves `host.docker.internal` to IPv6 first, which breaks connections to IPv4-only containers.
 
 Save — Aegis pushes the cluster to Envoy immediately.
 
