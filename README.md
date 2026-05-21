@@ -42,54 +42,22 @@ curl -o configs/starter.json https://raw.githubusercontent.com/axieyangb/aegis/m
 ### 2. Start the gateway
 
 ```bash
+mkdir aegis && cd aegis
+
+curl -O https://raw.githubusercontent.com/axieyangb/aegis/main/docker-compose.yml
+mkdir envoy
+curl -o envoy/envoy.yaml https://raw.githubusercontent.com/axieyangb/aegis/main/envoy/envoy.yaml
+```
+
+Edit `docker-compose.yml` and change `ADMIN_PASSWORD=changeme` to something secure, then:
+
+```bash
 docker compose up -d
 ```
 
-*   Open **`http://localhost:8765`** — default login: `admin` / `changeme` (Change `ADMIN_PASSWORD` in `docker-compose.yml`, or change it in **Settings → Auth** after logging in!).
+Open **`http://localhost:8765`** — default login: `admin` / `changeme` (or the password you set).
 
-### 3. Import the baseline configuration
-
-*   Go to the **Gateway** page in the dashboard.
-*   Click the **Import** button at the top right.
-*   Upload the `configs/starter.json` file you downloaded.
-*   You should see the `http_listener` and `https_listener` appear, and the xDS sync status turn green!
-
-
----
-
-## Simulating Traffic & Live Demo
-
-If you are running Aegis locally without real traffic, you can use our built-in **Traffic Demo Generator** script. We provide a pre-configured **`configs/demo.json`** database baseline that has the **PROXY Protocol enabled out-of-the-box** so you can run the demo with zero manual setup!
-
-### 1. Start the Gateway & Import Demo Configuration
-1.  Ensure your containers are running (`docker compose up -d`).
-2.  Open the Aegis Dashboard (`http://localhost:8765`).
-3.  Go to the **Gateway** page, click the **Import** button (top right), and upload **`configs/demo.json`** (instead of `starter.json`).
-    *   *(Optional: If you downloaded the quick-start files via curl, you can download the demo config using: `curl -o configs/demo.json https://raw.githubusercontent.com/axieyangb/aegis/main/configs/demo.json`)*
-    *   This automatically configures Envoy's HTTP listener to accept spoofed client IPs via PROXY Protocol.
-
-### 2. Download and Run the Generator
-
-If you didn't clone the repository, you can download the self-contained Python script first:
-```bash
-mkdir -p scripts
-curl -o scripts/demo_generator.py https://raw.githubusercontent.com/axieyangb/aegis/main/scripts/demo_generator.py
-```
-
-Then, run the generator from the repository root:
-```bash
-python3 scripts/demo_generator.py
-```
-
-
-### 3. Watch the Dashboard Live!
-Open your dashboard and watch:
-*   **World Traffic Map:** populating with requests flowing in from USA, Japan, Germany, Brazil, and Australia.
-*   **Charts:** Device breakdowns, User-Agents, and HTTP Status codes filling up dynamically.
-*   **Scanner Bot:** A simulated bot crawler probing admin endpoints (like `/wp-admin` or `/.env`), raising the anomaly charts.
-*   **AI Auto-Blocking in Action:** An attacker (`99.99.99.99`) will launch a SQL injection attack. You will see Aegis's AI engine detect it, trigger an alert, and **push a dynamic xDS block rule to Envoy**. Instantly, all subsequent requests from `99.99.99.99` will start failing (dropped connections) on the dashboard!
-
-👉 **For a detailed breakdown of how the generator simulates traffic and auto-blocking under the hood, see the [Traffic Generator Guide](scripts/README.md).**
+On first boot, Aegis automatically seeds a working gateway baseline — HTTP listener (port 10080) and HTTPS listener (port 10443) — ready to accept filter chains. No file import required.
 
 ---
 
@@ -145,7 +113,7 @@ Open the dashboard on your phone, ask Owl what happened in the last two hours, a
 | 📊 | **Real-time Analytics** | Live request feed, top IPs, world map, device + status breakdown |
 | 🤖 | **AI Threat Analysis** | Background IP classification using Gemini / Claude / GPT / Ollama. Auto-blocks attackers |
 | 🦉 | **Owl AI Assistant** | Chat with your gateway — ask about traffic, threats, config, anything |
-| 🔒 | **TLS Automation** | ACME (Let's Encrypt, ZeroSSL), HTTP-01 & DNS-01 challenges, auto-renewal via Envoy SDS |
+| 🔒 | **TLS Automation** | ACME (Let's Encrypt, ZeroSSL), HTTP-01 & DNS-01, auto-renewal via Envoy SDS. Built-in Local CA for internal services — no domain or open ports required |
 | 🔔 | **Notifications** | Telegram, Discord, Slack webhooks — alert on blocks, anomalies, daily digest |
 | 🌍 | **Geo Analytics** | Country-level traffic breakdown, remote or local MaxMind GeoIP |
 | 🔑 | **Auth & SSO** | Built-in login + optional OIDC/SSO (Google, Authentik, Keycloak, etc.) |
@@ -167,22 +135,30 @@ Internet ──▶ Envoy Proxy ──▶ Your services
              │ xDS CP   │  controls Envoy live
              │ Analytics│  reads Envoy ALS logs
              │ AI Engine│  classifies IPs
-             │ Cert Mgr │  ACME → Envoy SDS
+             │ Cert Mgr │  ACME + Local CA → Envoy SDS
              │ Dashboard│  web UI + REST API
              └──────────┘
 ```
 
 ---
 
-## Deployment Options (Exposing Envoy)
+## TLS Certificates
 
-Depending on your network environment, Aegis supports three main deployment architectures to expose Envoy to the public internet:
+### ACME (Let's Encrypt / ZeroSSL)
 
-1.  **Direct Exposure (Port Forwarding):** Best for environments with a static public IP. WAN ports `80`/`443` are forwarded directly from your home router to the host.
-2.  **VPS Relay Tunnel (PROXY Protocol):** Recommended for home labs, CGNAT, or privacy. Hides your home IP by tunneling traffic from a public VPS to Envoy, using the PROXY Protocol to safely preserve client IPs.
-3.  **Cloudflare Tunnel (HTTP Headers):** Best for zero-port-forwarding setups behind Cloudflare. Preserves client IPs by extracting custom Cloudflare HTTP headers.
+For internet-exposed domains. Aegis handles the full ACME lifecycle — issue, challenge, and auto-renew — and pushes the certificate directly to Envoy SDS. Supports HTTP-01 and DNS-01 challenges (Cloudflare, Route 53, GoDaddy).
 
-👉 **See the full [Deployment Architectures Guide](docs/deployment-architectures.md) for detailed diagrams, configuration, and setup instructions.**
+### Local CA for internal / lab use
+
+No domain, no open ports, no external CA required. Aegis generates a self-signed ECDSA Root CA on first use and issues 1-year leaf certificates instantly. Ideal for:
+
+- Internal services and home lab setups
+- Development and staging environments
+- Proxying local services over TLS without exposing ports
+
+Go to **Certificates → Signing Providers → Add Provider**, choose **Local CA**, and issue a cert in seconds. Download the Root CA from the Certificates page to install it in your browser or OS trust store.
+
+**Bring your own CA**: If you already have a corporate or internal CA, you can import it — go to **Certificates → Local CA → Import CA** and upload your CA cert and private key. Aegis will use your CA to sign all leaf certs going forward.
 
 ---
 
@@ -196,8 +172,8 @@ Depending on your network environment, Aegis supports three main deployment arch
 | `XDS_PORT` | `18000` | Envoy gRPC xDS port |
 | `DATA_DIR` | `/data` | Persistent data directory |
 | `ADMIN_USERNAME` | `admin` | Admin username |
-| `ADMIN_PASSWORD` | `aegis` | Admin password — **change this** |
-| `AUTH_ENABLED` | `true` | Require login. Set to `false` to bypass authentication (anonymous mode) |
+| `ADMIN_PASSWORD` | `aegis` | Admin password (docker-compose.yml ships with `changeme`) — **change this** |
+| `AUTH_ENABLED` | `true` | Require login |
 | `BLOCK_ENABLED` | `true` | Enable auto IP blocking |
 | `NODE_ID` | `home` | Envoy node ID (must match envoy.yaml) |
 
@@ -216,10 +192,11 @@ Mount a volume or directory to `/data`:
 
 ## Docs
 
-*   [Getting started](docs/getting-started.md)
-*   [Deployment Architectures (Exposing Envoy)](docs/deployment-architectures.md)
-*   [Sequence Diagrams (Flow References)](docs/sequence-diagrams.md)
-*   [Envoy configuration](docs/envoy-config.md)
+- [Getting started](docs/getting-started.md)
+- [Envoy configuration](docs/envoy-config.md)
+- [Tutorial: Local HTTPS with whoami](docs/tutorial-whoami-local-https.md)
+- [AI setup (Owl chat + threat analysis)](docs/ai-setup.md)
+- [Notifications (Telegram, Discord, webhooks)](docs/notifications.md)
 
 ---
 

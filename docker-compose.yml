@@ -23,6 +23,7 @@ services:
     ports:
       - "80:10080"     # HTTP  — listeners in Aegis UI should bind to port 10080
       - "443:10443"    # HTTPS — listeners in Aegis UI should bind to port 10443
+      - "9901:9901"    # Envoy admin UI
     volumes:
       - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
     command:
@@ -31,14 +32,6 @@ services:
       - /etc/envoy/envoy.yaml
       - --log-level
       - warn
-    networks:
-      default:
-        aliases:
-          - envoy
-
-networks:
-  default:
-    driver: bridge
 
 volumes:
   aegis_data:
