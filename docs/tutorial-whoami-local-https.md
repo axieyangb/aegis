@@ -44,6 +44,7 @@ Open the Aegis dashboard → **Gateway → Clusters → Add Cluster**.
 | Host | `host.docker.internal` |
 | Port | `8081` |
 | Connect timeout | `5s` |
+| DNS Lookup Family | `V4_ONLY` |
 
 Save — Aegis pushes the cluster to Envoy immediately.
 

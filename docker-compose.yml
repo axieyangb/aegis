@@ -1,7 +1,7 @@
 services:
-  aegis-gateway:
+  aegis:
     image: axieyangb/aegis:latest
-    container_name: aegis-gateway
+    container_name: aegis
     restart: unless-stopped
     ports:
       - "8765:8765"
@@ -19,7 +19,7 @@ services:
     container_name: envoy
     restart: unless-stopped
     depends_on:
-      - aegis-gateway
+      - aegis
     ports:
       - "80:10080"     # HTTP  — listeners in Aegis UI should bind to port 10080
       - "443:10443"    # HTTPS — listeners in Aegis UI should bind to port 10443
