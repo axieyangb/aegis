@@ -16,8 +16,15 @@ Instead of clicking through the UI, you describe what you want to Owl and it han
 
 - Docker and Docker Compose installed
 - Aegis + Envoy already running and accessible at `http://localhost:8765`
-- Owl Chat configured in **Settings → AI → Owl Chat** (provider + API key saved)
 - Admin access to add an `/etc/hosts` entry on your machine
+
+### Configure Owl Chat (first time only)
+
+Go to **Settings → AI → Owl Chat**, enable it, pick a provider (e.g. Gemini), enter your API key, and save. Owl will immediately show as ready (green dot).
+
+![Configure Gemini API key for Owl Chat](assets/owl-ai-setup-demo.gif)
+
+Once configured you can ask Owl questions about recent traffic — it has live access to your gateway logs and threat intelligence.
 
 ---
 
