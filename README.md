@@ -194,9 +194,15 @@ Mount a volume or directory to `/data`:
 
 - [Getting started](docs/getting-started.md)
 - [Envoy configuration](docs/envoy-config.md)
-- [Tutorial: Local HTTPS with whoami](docs/tutorial-whoami-local-https.md)
 - [AI setup (Owl chat + threat analysis)](docs/ai-setup.md)
 - [Notifications (Telegram, Discord, webhooks)](docs/notifications.md)
+
+### Tutorials
+
+| # | Tutorial | Description |
+|---|---|---|
+| 01 | [Local HTTPS with a whoami service](docs/tutorials/01-whoami-local-https.md) | Expose a service over HTTPS using the Local CA — configure manually through the UI |
+| 02 | [Configure the Gateway with Owl AI](docs/tutorials/02-whoami-ai-setup.md) | Same setup, but hand a single prompt to Owl and let AI do the configuration |
 
 ---
 
