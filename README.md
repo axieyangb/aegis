@@ -166,6 +166,29 @@ Data is persisted at `/data/aegis.db` (SQLite). Mount a volume to keep data acro
 | 03 | [Understanding the Dashboard](docs/tutorials/03-understanding-the-dashboard.md) | Read live traffic data and analyse request patterns with Owl |
 | 04 | [AI-Driven Protection](docs/tutorials/04-ai-driven-protection.md) | Use Owl to disable a service under attack and bring it back |
 
+### Videos
+
+<table>
+<tr>
+<td align="center" width="50%">
+
+[![Self-Host a Service with HTTPS — Aegis Gateway + No-IP DDNS + Let's Encrypt](https://img.youtube.com/vi/wE7uO7stkew/maxresdefault.jpg)](https://youtu.be/wE7uO7stkew)
+
+**[Self-Host a Service with HTTPS](https://youtu.be/wE7uO7stkew)**<br>
+Install Aegis, port-forward your router, set up No-IP DDNS, and issue a Let's Encrypt cert — ending with a live public HTTPS service.
+
+</td>
+<td align="center" width="50%">
+
+[![AI Configures HTTPS Gateway and TLS Certificates — Aegis + Owl AI](https://img.youtube.com/vi/lWCgecbXxjU/maxresdefault.jpg)](https://youtu.be/lWCgecbXxjU)
+
+**[AI Configures HTTPS Gateway and TLS Certificates](https://youtu.be/lWCgecbXxjU)**<br>
+One prompt to Owl AI sets up the cluster, issues a certificate, and wires the filter chain — no YAML, no restarts.
+
+</td>
+</tr>
+</table>
+
 ---
 
 ## License
