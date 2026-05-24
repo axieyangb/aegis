@@ -2,6 +2,34 @@
 
 All notable changes to Aegis are documented here.
 
+## [1.1.0] — 2026-05-23
+
+### Gateway — Protection
+
+- **Styled error pages** — 403 (RBAC block) and 429 (rate limit) responses now serve a dark HTML page instead of a bare status code. Customisable contact / appeal message. Can be previewed inline before saving.
+- **Maintenance mode** — Put any listener (or individual SNI filter chains) into a 503 "We'll be back shortly" page with one click. Full per-domain granularity: `https_listener:app.example.com` puts only that domain into maintenance while leaving every other domain online.
+- **Dynamic preview** — Block page and maintenance page previews render in an inline iframe that auto-refreshes as you type the contact message. No save required to see the result.
+- **Multi-SNI display** — Maintenance panel now shows all SNI names for each filter chain (e.g. `nas, nas.example.com`) so multi-SNI chains are fully visible.
+- **Protection section** moved above Topology in the Gateway navigation.
+
+### Owl / MCP
+
+- `gateway_set_maintenance` now understands three key formats:
+  - `["*"]` — every listener
+  - `["<listener>"]` — every filter chain in that listener
+  - `["<listener>:<sni>"]` — a single filter chain by SNI/domain
+- `gateway_list_listeners` returns `filter_chains` with per-chain `sni_domains` so Owl can discover exact SNI keys before targeting a domain.
+- MCP tool descriptions and incident response procedure updated; setup-specific defaults removed.
+
+### Bug fixes
+
+- Fixed Envoy NACK caused by invalid `ResponseFlagFilter` flag values (`"RBAC"`, `"RL"`) not present in Envoy 1.35's allowlist — replaced with `StatusCodeFilter` matching by HTTP status code.
+- Fixed `SubstitutionFormatString` deprecation warning in Envoy 1.35 — migrated from `text_format` to `text_format_source` / `DataSource_InlineString`.
+
+### UI
+
+- All hardcoded hex colors in the Gateway panel replaced with CSS theme variables — Protection cards, rate limit panel, block pages panel, and maintenance panel now adapt correctly to dark, dim, slate, and light themes.
+
 ## [1.0.0] — 2026-05-19
 
 ### Initial release

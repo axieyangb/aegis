@@ -107,6 +107,22 @@ Full dashboard and Owl chat from any device. Ask Owl what happened in the last t
 
 </td>
 </tr>
+<tr>
+<td align="center" width="50%">
+
+**🚧 Protection & Maintenance**
+
+Styled 403/429 block pages with a customisable contact message — replace bare status codes with a branded denial page. Maintenance mode puts any listener (or a single SNI domain) into a 503 page while leaving all other services online. Preview pages inline before pushing to Envoy.
+
+</td>
+<td align="center" width="50%">
+
+**⚡ Per-Domain Maintenance via Owl**
+
+Ask Owl to put a single domain into maintenance while the rest of your services stay live: Owl calls `gateway_list_listeners` to discover the SNI, then targets only that filter chain — no manual JSON editing required.
+
+</td>
+</tr>
 </table>
 
 ---
