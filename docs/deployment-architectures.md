@@ -1,6 +1,6 @@
 # Deployment Architectures (Exposing Envoy)
 
-To make Aegis and Envoy accept real public traffic, you need to expose Envoy's ports (Host `80`/`443`) to the internet. Depending on your network setup (home lab, static IP, CGNAT, VPS), you should choose one of the two main architectures below.
+To make Aegis and Envoy accept real public traffic, you need to expose Envoy's ports (Host `80`/`443`) to the internet. Depending on your network setup (on-prem LAN, static IP, CGNAT, VPS), you should choose one of the two main architectures below.
 
 ---
 

@@ -4,7 +4,17 @@ services:
     container_name: aegis
     restart: unless-stopped
     ports:
-      - "8765:8765"
+      - "8765:8765"      # UI + API
+      # Agents dial IN to this port over mTLS. Without it published, a node can
+      # be issued a join token and will never be able to use it — the one-line
+      # installer completes and the node never appears. Only needed if you are
+      # enrolling machines; a single-host gateway install can drop it.
+      - "8766:8766"      # agent control channel (mTLS)
+      # Overlay mesh. Needed for nodes that are not on this LAN; harmless if
+      # unused. UDP, and both are required — STUN discovers the path, WireGuard
+      # carries the traffic.
+      - "3478:3478/udp"    # STUN — NAT traversal
+      - "51820:51820/udp"  # WireGuard overlay
     volumes:
       - aegis_data:/data
     environment:
@@ -13,6 +23,11 @@ services:
       - AUTH_ENABLED=true
       - BLOCK_ENABLED=true
       - NODE_ID=home
+      # The address agents should dial back on. Leave blank for a gateway-only
+      # install; set it to a hostname or IP the nodes can actually reach before
+      # enrolling anything, or the token will carry an address that does not
+      # resolve from the node.
+      - AGENT_HOST=
 
   envoy:
     image: envoyproxy/envoy:v1.35-latest
