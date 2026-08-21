@@ -27,7 +27,10 @@ services:
       # install; set it to a hostname or IP the nodes can actually reach before
       # enrolling anything, or the token will carry an address that does not
       # resolve from the node.
-      - AGENT_HOST=
+      #
+      # Was AGENT_HOST, which still works but logs a deprecation on every boot.
+      # See docs/configuration.md for this and every other setting.
+      - HUB_EXTERNAL_HOST=
 
   envoy:
     image: envoyproxy/envoy:v1.35-latest
