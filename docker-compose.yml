@@ -19,7 +19,7 @@ services:
       - aegis_data:/data
     environment:
       - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=changeme        # change this
+      - ADMIN_PASSWORD=aegis           # default; change before exposing this hub
       - AUTH_ENABLED=true
       - BLOCK_ENABLED=true
       - NODE_ID=home
