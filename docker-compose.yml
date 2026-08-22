@@ -4,52 +4,32 @@ services:
     container_name: aegis
     restart: unless-stopped
     ports:
-      - "8765:8765"      # UI + API
+      - "8765:8765"      # UI + API — open this in a browser
       # Agents dial IN to this port over mTLS. Without it published, a node can
       # be issued a join token and will never be able to use it — the one-line
-      # installer completes and the node never appears. Only needed if you are
-      # enrolling machines; a single-host gateway install can drop it.
+      # installer completes and the node never appears.
       - "8766:8766"      # agent control channel (mTLS)
-      # Overlay mesh. Needed for nodes that are not on this LAN; harmless if
-      # unused. UDP, and both are required — STUN discovers the path, WireGuard
-      # carries the traffic.
-      - "3478:3478/udp"    # STUN — NAT traversal
-      - "51820:51820/udp"  # WireGuard overlay
     volumes:
       - aegis_data:/data
     environment:
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=aegis           # default; change before exposing this hub
       - AUTH_ENABLED=true
-      - BLOCK_ENABLED=true
       - NODE_ID=home
-      # The address agents should dial back on. Leave blank for a gateway-only
-      # install; set it to a hostname or IP the nodes can actually reach before
-      # enrolling anything, or the token will carry an address that does not
-      # resolve from the node.
+      # What the hub shows on a fresh install: mvp = provision hardware, join
+      # the fleet, see it healthy (Fleet, Hardware, GPUs). The image still
+      # contains everything — widen with AEGIS_FEATURES=+<id> or remove this line
+      # to run the full product. See docs/configuration.md.
+      - AEGIS_PROFILE=mvp
+      # The LAN address agents dial back on — the hub advertises it as
+      # wss://<host>:8766 (the agent port above). The join token EMBEDS it, so it
+      # must resolve FROM THE NODE, not from the hub. A LAN IP is right for LAN
+      # nodes. Leave blank if you are not enrolling machines yet; set it before
+      # you do, or the token will carry an address the node cannot reach.
       #
-      # Was AGENT_HOST, which still works but logs a deprecation on every boot.
-      # See docs/configuration.md for this and every other setting.
-      - HUB_EXTERNAL_HOST=
-
-  envoy:
-    image: envoyproxy/envoy:v1.35-latest
-    container_name: envoy
-    restart: unless-stopped
-    depends_on:
-      - aegis
-    ports:
-      - "80:10080"     # HTTP  — listeners in Aegis UI should bind to port 10080
-      - "443:10443"    # HTTPS — listeners in Aegis UI should bind to port 10443
-      - "9901:9901"    # Envoy admin UI
-    volumes:
-      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
-    command:
-      - /usr/local/bin/envoy
-      - -c
-      - /etc/envoy/envoy.yaml
-      - --log-level
-      - warn
+      # For nodes across the internet you want HUB_EXTERNAL_HOST (a public name)
+      # plus a routed HUB_EXTERNAL_AGENT_PORT instead — see docs/configuration.md.
+      - HUB_INTERNAL_HOSTS=
 
 volumes:
   aegis_data:
