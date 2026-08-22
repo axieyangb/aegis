@@ -30,6 +30,13 @@ services:
       # For nodes across the internet you want HUB_EXTERNAL_HOST (a public name)
       # plus a routed HUB_EXTERNAL_AGENT_PORT instead — see docs/configuration.md.
       - HUB_INTERNAL_HOSTS=
+      # Which catalog data packs to preinstall on first boot, from the packs
+      # bundled in the image (no internet needed). The catalog is DATA, not baked
+      # into the binary. minimal = just the OS image provisioning needs; none =
+      # empty; all = every bundled pack; or a list like "os-images,apps" or
+      # specific slugs ("grafana,ubuntu-24.04"). Idempotent — never overwrites
+      # catalog entries you add later. See docs/configuration.md.
+      - AEGIS_SEED_PACKS=minimal
 
 volumes:
   aegis_data:
